@@ -3,6 +3,17 @@ import { Database } from './supabase'
 
 // 클라이언트 컴포넌트용 Supabase 클라이언트
 export const createClient = () => {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  
+  // 빌드 시점에 환경 변수가 없으면 더미 값으로 생성
+  if (!supabaseUrl || !supabaseKey) {
+    return createClientComponentClient<Database>({
+      supabaseUrl: 'https://placeholder.supabase.co',
+      supabaseKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsYWNlaG9sZGVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NDUxOTI4MjQsImV4cCI6MTk2MDc2ODgyNH0.placeholder',
+    })
+  }
+  
   return createClientComponentClient<Database>()
 }
 
