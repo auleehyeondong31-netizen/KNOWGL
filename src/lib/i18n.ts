@@ -1,0 +1,411 @@
+export const i18n = {
+  ko: {
+    // Navigation
+    tab_home: '홈',
+    tab_map: '지도',
+    tab_market: '마켓',
+    tab_community: '커뮤니티',
+    tab_mypage: '마이',
+    
+    // Home
+    home_search: '지역, 사업장, 주거 검색...',
+    menu_job: '일자리',
+    menu_house: '주거',
+    menu_tips: '꿀팁자료',
+    menu_comm: '커뮤니티',
+    trend_title: '인기 마켓 자료 🔥',
+    tips_title: '슬기로운 해외생활',
+    
+    // Map
+    mode_job: '일자리',
+    mode_housing: '주거',
+    search_job: '지역, 사업장 검색...',
+    search_housing: '지역, 고시원, 쉐어하우스 검색...',
+    filter_all: '전체',
+    filter_hotel: '호텔',
+    filter_farm: '농장',
+    filter_goshi: '고시원',
+    filter_share: '쉐어하우스',
+    filter_oneroom: '원룸',
+    
+    // Review
+    ai_summary: 'AI 한줄평',
+    btn_details: '상세 정보 및 리뷰 보기',
+    
+    // Market
+    market_title: '지식 마켓',
+    cat_all: '전체',
+    cat_housing: '주거정보',
+    cat_job: '일자리',
+    cat_visa: '비자/서류',
+    
+    // Community
+    community_title: '커뮤니티',
+    
+    // MyPage
+    mypage_title: '마이페이지',
+    verified_badge: '🛡️ 인증됨',
+    visa_alarm: '비자 알리미',
+    visa_expiry: '만료 예정',
+    sec_safety: '안전 및 지원',
+    btn_sos: '긴급 SOS',
+    btn_inquiry: '1:1 문의',
+    
+    // Auth
+    login_kakao: '카카오로 3초만에 시작',
+    login_google: 'Google로 계속하기',
+    login_apple: 'Apple로 계속하기',
+    login_phone: '핸드폰 번호로 로그인',
+    login_terms: '로그인 시 이용약관 및 개인정보처리방침에 동의합니다.',
+    
+    // Onboarding
+    onboarding_nationality: '어느 나라에서 오셨나요?',
+    onboarding_language: '어떤 언어가 편하신가요?',
+    onboarding_destination: '어디로 떠나시나요?',
+    select_nationality: '국적 선택하기',
+    select_language: '언어 선택하기',
+    select_destination: '국가 선택하기',
+    btn_next: '다음으로',
+    btn_start: 'KNOWGL 시작하기',
+    
+    // SOS
+    sos_title: 'SOS',
+    sos_desc: '긴급 상황 시 아래 카드를 보여주세요',
+    sos_hospital: '아파요. 병원 가주세요.',
+    sos_pharmacy: '약국이 어디에 있나요?',
+    sos_wallet: '지갑을 잃어버렸어요.',
+    sos_taxi: '이 주소로 가주세요.',
+    
+    // Chat
+    chat_title: 'AI 고객센터',
+    chat_welcome: '안녕하세요! 노글 AI입니다.\n무엇을 도와드릴까요?',
+    chat_admin: '해결이 안 되셨나요? 관리자 문의',
+    
+    // Premium
+    premium_title: 'KNOWGL PLUS +',
+    premium_desc: '더 스마트하고 안전한 해외 생활을 위한 특별한 멤버십',
+    premium_coupon: '매월 3,000원 쿠폰',
+    premium_discount: '전 자료 10% 추가 할인',
+    premium_ai: 'AI 비서 & 서류 무제한',
+    premium_start: '지금 시작하기 (첫 달 무료)',
+  },
+  en: {
+    tab_home: 'Home',
+    tab_map: 'Map',
+    tab_market: 'Market',
+    tab_community: 'Community',
+    tab_mypage: 'My',
+    
+    home_search: 'Search area, jobs, housing...',
+    menu_job: 'Jobs',
+    menu_house: 'Housing',
+    menu_tips: 'Tips',
+    menu_comm: 'Community',
+    trend_title: 'Trending Items 🔥',
+    tips_title: 'Life Tips',
+    
+    mode_job: 'Jobs',
+    mode_housing: 'Housing',
+    search_job: 'Search workplaces...',
+    search_housing: 'Search Goshiwon, Sharehouse...',
+    filter_all: 'All',
+    filter_hotel: 'Hotel',
+    filter_farm: 'Farm',
+    filter_goshi: 'Goshiwon',
+    filter_share: 'Sharehouse',
+    filter_oneroom: 'One-room',
+    
+    ai_summary: 'AI Summary',
+    btn_details: 'View Details',
+    
+    market_title: 'Market',
+    cat_all: 'All',
+    cat_housing: 'Housing Tips',
+    cat_job: 'Job Tips',
+    cat_visa: 'Visa Docs',
+    
+    community_title: 'Community',
+    
+    mypage_title: 'My Page',
+    verified_badge: '🛡️ Verified',
+    visa_alarm: 'Visa Alert',
+    visa_expiry: 'Expires',
+    sec_safety: 'Safety & Support',
+    btn_sos: 'SOS Card',
+    btn_inquiry: '1:1 Inquiry',
+    
+    login_kakao: 'Start with Kakao',
+    login_google: 'Continue with Google',
+    login_apple: 'Continue with Apple',
+    login_phone: 'Login with Phone',
+    login_terms: 'By logging in, you agree to our Terms and Privacy Policy.',
+    
+    onboarding_nationality: 'Where are you from?',
+    onboarding_language: 'What language do you prefer?',
+    onboarding_destination: 'Where are you going?',
+    select_nationality: 'Select nationality',
+    select_language: 'Select language',
+    select_destination: 'Select destination',
+    btn_next: 'Next',
+    btn_start: 'Start KNOWGL',
+    
+    sos_title: 'SOS',
+    sos_desc: 'Show this card in emergency',
+    sos_hospital: 'I am sick. Please take me to the hospital.',
+    sos_pharmacy: 'Where is the pharmacy?',
+    sos_wallet: 'I lost my wallet. Help me.',
+    sos_taxi: 'Please take me to this address.',
+    
+    chat_title: 'AI Support',
+    chat_welcome: 'Hi! I\'m KNOWGL AI.\nHow can I help you?',
+    chat_admin: 'Not solved? Contact Admin',
+    
+    premium_title: 'KNOWGL PLUS +',
+    premium_desc: 'Special membership for smarter, safer life abroad',
+    premium_coupon: '₩3,000 monthly coupon',
+    premium_discount: '10% extra discount on all items',
+    premium_ai: 'Unlimited AI assistant & docs',
+    premium_start: 'Start now (First month free)',
+  },
+  ja: {
+    tab_home: 'ホーム',
+    tab_map: 'マップ',
+    tab_market: 'マーケット',
+    tab_community: '掲示板',
+    tab_mypage: 'マイ',
+    
+    home_search: '地域、職場、住まい検索...',
+    menu_job: 'バイト',
+    menu_house: '住まい',
+    menu_tips: '資料',
+    menu_comm: '掲示板',
+    trend_title: '人気資料 🔥',
+    tips_title: '生活のヒント',
+    
+    mode_job: 'バイト',
+    mode_housing: '住まい',
+    search_job: '地域、職場を検索...',
+    search_housing: 'コシウォン、シェアハウス検索...',
+    filter_all: '全体',
+    filter_hotel: 'ホテル',
+    filter_farm: '農場',
+    filter_goshi: 'コシウォン',
+    filter_share: 'シェアハウス',
+    filter_oneroom: 'ワンルーム',
+    
+    ai_summary: 'AI 一言レビュー',
+    btn_details: '詳細を見る',
+    
+    market_title: '知識マーケット',
+    cat_all: '全体',
+    cat_housing: '住まい情報',
+    cat_job: '仕事情報',
+    cat_visa: 'ビザ/書類',
+    
+    community_title: '掲示板',
+    
+    mypage_title: 'マイページ',
+    verified_badge: '🛡️ 認証済み',
+    visa_alarm: 'ビザ通知',
+    visa_expiry: '満了予定',
+    sec_safety: '安全・サポート',
+    btn_sos: '緊急SOS',
+    btn_inquiry: '1:1 問い合わせ',
+    
+    login_kakao: 'カカオで始める',
+    login_google: 'Googleで続ける',
+    login_apple: 'Appleで続ける',
+    login_phone: '電話番号でログイン',
+    login_terms: 'ログインすると利用規約とプライバシーポリシーに同意したことになります。',
+    
+    onboarding_nationality: 'どちらの国からですか？',
+    onboarding_language: 'どの言語が便利ですか？',
+    onboarding_destination: 'どこへ行きますか？',
+    select_nationality: '国籍を選択',
+    select_language: '言語を選択',
+    select_destination: '目的地を選択',
+    btn_next: '次へ',
+    btn_start: 'KNOWGLを始める',
+    
+    sos_title: 'SOS',
+    sos_desc: '緊急時にこのカードを見せてください',
+    sos_hospital: '体が痛いです。病院に連れて行ってください。',
+    sos_pharmacy: '薬局はどこですか？',
+    sos_wallet: '財布を失くしました。助けてください。',
+    sos_taxi: 'この住所へ行ってください。',
+    
+    chat_title: 'AI サポート',
+    chat_welcome: 'こんにちは！KNOWGL AIです。\nお手伝いしましょうか？',
+    chat_admin: '解決しませんか？管理者へ連絡',
+    
+    premium_title: 'KNOWGL PLUS +',
+    premium_desc: 'よりスマートで安全な海外生活のための特別なメンバーシップ',
+    premium_coupon: '毎月3,000ウォンクーポン',
+    premium_discount: '全資料10%追加割引',
+    premium_ai: 'AI秘書＆書類無制限',
+    premium_start: '今すぐ始める（初月無料）',
+  },
+  zh: {
+    tab_home: '首页',
+    tab_map: '地图',
+    tab_market: '市场',
+    tab_community: '社区',
+    tab_mypage: '我的',
+    
+    home_search: '搜索地区、工作、住宿...',
+    menu_job: '兼职',
+    menu_house: '住宿',
+    menu_tips: '资料',
+    menu_comm: '社区',
+    trend_title: '热门资料 🔥',
+    tips_title: '生活小贴士',
+    
+    mode_job: '兼职',
+    mode_housing: '住宿',
+    search_job: '搜索工作场所...',
+    search_housing: '搜索考试院、合租房...',
+    filter_all: '全部',
+    filter_hotel: '酒店',
+    filter_farm: '农场',
+    filter_goshi: '考试院',
+    filter_share: '合租房',
+    filter_oneroom: '单间',
+    
+    ai_summary: 'AI 点评',
+    btn_details: '查看详情',
+    
+    market_title: '知识市场',
+    cat_all: '全部',
+    cat_housing: '住宿信息',
+    cat_job: '兼职信息',
+    cat_visa: '签证/文档',
+    
+    community_title: '社区',
+    
+    mypage_title: '我的页面',
+    verified_badge: '🛡️ 认证',
+    visa_alarm: '签证提醒',
+    visa_expiry: '到期',
+    sec_safety: '安全与支持',
+    btn_sos: '紧急求助',
+    btn_inquiry: '1:1 咨询',
+    
+    login_kakao: '使用Kakao开始',
+    login_google: '使用Google继续',
+    login_apple: '使用Apple继续',
+    login_phone: '使用手机号登录',
+    login_terms: '登录即表示您同意我们的服务条款和隐私政策。',
+    
+    onboarding_nationality: '您来自哪个国家？',
+    onboarding_language: '您喜欢哪种语言？',
+    onboarding_destination: '您要去哪里？',
+    select_nationality: '选择国籍',
+    select_language: '选择语言',
+    select_destination: '选择目的地',
+    btn_next: '下一步',
+    btn_start: '开始使用KNOWGL',
+    
+    sos_title: 'SOS',
+    sos_desc: '紧急情况请出示此卡',
+    sos_hospital: '我生病了，请带我去医院。',
+    sos_pharmacy: '药店在哪里？',
+    sos_wallet: '我丢了钱包，请帮帮我。',
+    sos_taxi: '请带我去这个地址。',
+    
+    chat_title: 'AI 客服',
+    chat_welcome: '您好！我是 KNOWGL AI。\n有什么可以帮您？',
+    chat_admin: '没解决？联系管理员',
+    
+    premium_title: 'KNOWGL PLUS +',
+    premium_desc: '为更智能、更安全的海外生活提供特别会员服务',
+    premium_coupon: '每月3,000韩元优惠券',
+    premium_discount: '全部资料额外10%折扣',
+    premium_ai: '无限AI助手和文档',
+    premium_start: '立即开始（首月免费）',
+  },
+  vi: {
+    tab_home: 'Trang chủ',
+    tab_map: 'Bản đồ',
+    tab_market: 'Chợ',
+    tab_community: 'Cộng đồng',
+    tab_mypage: 'Tôi',
+    
+    home_search: 'Tìm khu vực, việc làm, nhà ở...',
+    menu_job: 'Việc làm',
+    menu_house: 'Nhà ở',
+    menu_tips: 'Mẹo',
+    menu_comm: 'Cộng đồng',
+    trend_title: 'Tài liệu HOT 🔥',
+    tips_title: 'Mẹo cuộc sống',
+    
+    mode_job: 'Việc làm',
+    mode_housing: 'Nhà ở',
+    search_job: 'Tìm nơi làm việc...',
+    search_housing: 'Tìm Goshiwon, Sharehouse...',
+    filter_all: 'Tất cả',
+    filter_hotel: 'Khách sạn',
+    filter_farm: 'Nông trại',
+    filter_goshi: 'Goshiwon',
+    filter_share: 'Sharehouse',
+    filter_oneroom: 'Phòng đơn',
+    
+    ai_summary: 'Tóm tắt AI',
+    btn_details: 'Xem chi tiết',
+    
+    market_title: 'Chợ kiến thức',
+    cat_all: 'Tất cả',
+    cat_housing: 'Thông tin nhà',
+    cat_job: 'Thông tin việc',
+    cat_visa: 'Visa/Giấy tờ',
+    
+    community_title: 'Cộng đồng',
+    
+    mypage_title: 'Trang cá nhân',
+    verified_badge: '🛡️ Đã xác thực',
+    visa_alarm: 'Thông báo Visa',
+    visa_expiry: 'Hết hạn',
+    sec_safety: 'An toàn & Hỗ trợ',
+    btn_sos: 'Thẻ SOS',
+    btn_inquiry: '1:1 Chat',
+    
+    login_kakao: 'Bắt đầu với Kakao',
+    login_google: 'Tiếp tục với Google',
+    login_apple: 'Tiếp tục với Apple',
+    login_phone: 'Đăng nhập bằng điện thoại',
+    login_terms: 'Bằng cách đăng nhập, bạn đồng ý với Điều khoản và Chính sách bảo mật.',
+    
+    onboarding_nationality: 'Bạn đến từ đâu?',
+    onboarding_language: 'Bạn thích ngôn ngữ nào?',
+    onboarding_destination: 'Bạn đang đi đâu?',
+    select_nationality: 'Chọn quốc tịch',
+    select_language: 'Chọn ngôn ngữ',
+    select_destination: 'Chọn điểm đến',
+    btn_next: 'Tiếp theo',
+    btn_start: 'Bắt đầu KNOWGL',
+    
+    sos_title: 'SOS',
+    sos_desc: 'Vui lòng xuất trình thẻ này trong trường hợp khẩn cấp',
+    sos_hospital: 'Tôi bị ốm. Làm ơn đưa tôi đến bệnh viện.',
+    sos_pharmacy: 'Hiệu thuốc ở đâu?',
+    sos_wallet: 'Tôi bị mất ví. Hãy giúp tôi.',
+    sos_taxi: 'Làm ơn đưa tôi đến địa chỉ này.',
+    
+    chat_title: 'Hỗ trợ AI',
+    chat_welcome: 'Xin chào! Tôi là KNOWGL AI.\nTôi có thể giúp gì cho bạn?',
+    chat_admin: 'Chưa giải quyết? Liên hệ Admin',
+    
+    premium_title: 'KNOWGL PLUS +',
+    premium_desc: 'Gói thành viên đặc biệt cho cuộc sống ở nước ngoài thông minh và an toàn hơn',
+    premium_coupon: 'Phiếu giảm giá 3,000 won hàng tháng',
+    premium_discount: 'Giảm thêm 10% cho tất cả tài liệu',
+    premium_ai: 'Trợ lý AI & tài liệu không giới hạn',
+    premium_start: 'Bắt đầu ngay (Tháng đầu miễn phí)',
+  },
+} as const
+
+export type Language = keyof typeof i18n
+export type TranslationKey = keyof typeof i18n.ko
+
+export function t(key: TranslationKey, lang: Language = 'ko'): string {
+  return i18n[lang]?.[key] || i18n.ko[key] || key
+}
