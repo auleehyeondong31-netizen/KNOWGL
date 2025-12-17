@@ -1,12 +1,23 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
+// 런타임에 환경 변수 사용
+function getSupabaseClient(): SupabaseClient {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  
+  if (!supabaseUrl || !supabaseAnonKey) {
+    // 서버 사이드 빌드 시점에는 더미 클라이언트 반환
+    if (typeof window === 'undefined') {
+      return createClient('https://placeholder.supabase.co', 'placeholder-key')
+    }
+    console.error('Supabase credentials not found')
+    return createClient('https://placeholder.supabase.co', 'placeholder-key')
+  }
+  
+  return createClient(supabaseUrl, supabaseAnonKey)
+}
 
-// 빌드 시점에 환경 변수가 없어도 오류 발생하지 않도록 처리
-export const supabase: SupabaseClient = supabaseUrl && supabaseAnonKey 
-  ? createClient(supabaseUrl, supabaseAnonKey)
-  : createClient('https://placeholder.supabase.co', 'placeholder-key')
+export const supabase: SupabaseClient = getSupabaseClient()
 
 export type Database = {
   public: {
