@@ -2,7 +2,20 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { Database } from './supabase'
 
 // 클라이언트 컴포넌트용 Supabase 클라이언트
-export const createClient = () => createClientComponentClient<Database>()
+export const createClient = () => {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  
+  // 환경 변수가 없으면 더미 옵션으로 생성 (빌드 시점용)
+  if (!supabaseUrl || !supabaseKey) {
+    return createClientComponentClient<Database>({
+      supabaseUrl: 'https://placeholder.supabase.co',
+      supabaseKey: 'placeholder-key',
+    })
+  }
+  
+  return createClientComponentClient<Database>()
+}
 
 // 이메일 로그인
 export async function signInWithEmail(email: string, password: string) {
