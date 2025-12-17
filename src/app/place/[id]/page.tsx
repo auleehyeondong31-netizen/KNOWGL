@@ -396,7 +396,7 @@ export default function PlaceDetailPage() {
                                 key={i} 
                                 className={cn(
                                   'w-5 h-5',
-                                  i <= Math.round(place.rating) 
+                                  i <= Math.round(Number(place.rating)) 
                                     ? 'fill-amber-400 text-amber-400' 
                                     : 'fill-gray-200 text-gray-200'
                                 )} 
