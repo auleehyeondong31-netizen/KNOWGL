@@ -7,8 +7,9 @@ import { useRouter } from 'next/navigation'
 import { 
   Settings, ChevronRight, Bell, Shield, Globe, CreditCard, 
   HelpCircle, LogOut, Star, FileText, Heart, MessageCircle,
-  AlertTriangle, Crown, User, Edit, Camera
+  AlertTriangle, Crown, User, Edit, Camera, Bot
 } from 'lucide-react'
+import Link from 'next/link'
 import { WebLayout } from '@/components/layout/WebLayout'
 import { useStore } from '@/store/useStore'
 import { t } from '@/lib/i18n'
@@ -36,6 +37,7 @@ const menuItems = [
   {
     section: '지원',
     items: [
+      { icon: Bot, label: 'AI 비자 상담', color: 'text-indigo-500', href: '/ai-chat' },
       { icon: HelpCircle, label: '고객센터', color: 'text-gray-600', href: '/mypage/support' },
       { icon: AlertTriangle, label: 'SOS 카드', color: 'text-red-500', href: '/mypage/sos' },
     ]
