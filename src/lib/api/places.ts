@@ -171,11 +171,7 @@ export function placeToMapItem(place: Place) {
   }
 }
 
-// Supabase 연결 여부 확인
+// Supabase 연결 여부 확인 (항상 true - 하드코딩된 값 사용)
 export function isSupabaseConfigured() {
-  return !!(
-    process.env.NEXT_PUBLIC_SUPABASE_URL &&
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY &&
-    process.env.NEXT_PUBLIC_SUPABASE_URL !== 'your_supabase_url'
-  )
+  return true
 }
