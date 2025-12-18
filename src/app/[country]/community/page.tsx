@@ -23,6 +23,8 @@ export default function CountryCommunityPage() {
   const [sortBy, setSortBy] = useState<'latest' | 'popular'>('popular')
   const [dbPosts, setDbPosts] = useState<CommunityPost[]>([])
   const [loading, setLoading] = useState(true)
+  // 사용자 반응 상태: { postId: 'like' | 'dislike' | null }
+  const [userReactions, setUserReactions] = useState<Record<string, 'like' | 'dislike' | null>>({})
 
   const isKorean = language === 'ko'
   const mockPosts = postsByCountry[countryCode] || postsByCountry['kr']
@@ -88,12 +90,25 @@ export default function CountryCommunityPage() {
       return 0 // DB에서 이미 최신순으로 가져옴
     })
 
-  // 좋아요/싫어요 클릭 핸들러
+  // 좋아요/싫어요 클릭 핸들러 (상호 배타적)
   const handleReaction = async (e: React.MouseEvent, postId: string | number, type: 'like' | 'dislike') => {
     e.preventDefault()
     e.stopPropagation()
     
-    if (typeof postId !== 'string') return // Mock 데이터는 처리 안함
+    const postIdStr = String(postId)
+    const currentReaction = userReactions[postIdStr]
+    
+    // 이미 같은 반응을 눌렀으면 무시 (취소 기능 없음)
+    if (currentReaction === type) return
+    
+    // 이미 반대 반응을 눌렀으면 무시 (한쪽만 선택 가능)
+    if (currentReaction && currentReaction !== type) return
+    
+    // Mock 데이터는 로컬 상태만 업데이트
+    if (typeof postId !== 'string') {
+      setUserReactions(prev => ({ ...prev, [postIdStr]: type }))
+      return
+    }
     
     try {
       const column = type === 'like' ? 'like_count' : 'dislike_count'
@@ -106,6 +121,9 @@ export default function CountryCommunityPage() {
         .from('community_posts')
         .update({ [column]: currentCount + 1 })
         .eq('id', postId)
+      
+      // 사용자 반응 상태 업데이트
+      setUserReactions(prev => ({ ...prev, [postIdStr]: type }))
       
       // 로컬 상태 업데이트
       setDbPosts(prev => prev.map(p => {
@@ -270,15 +288,31 @@ export default function CountryCommunityPage() {
                     <div className="flex items-center gap-3 text-gray-400">
                       <button
                         onClick={(e) => handleReaction(e, post.id, 'like')}
-                        className="flex items-center gap-1.5 text-sm hover:text-green-600 transition"
+                        disabled={userReactions[String(post.id)] === 'dislike'}
+                        className={cn(
+                          'flex items-center gap-1.5 text-sm transition btn-press',
+                          userReactions[String(post.id)] === 'like' 
+                            ? 'text-green-600 font-semibold' 
+                            : userReactions[String(post.id)] === 'dislike'
+                              ? 'text-gray-300 cursor-not-allowed'
+                              : 'hover:text-green-600'
+                        )}
                       >
-                        <ThumbsUp className="w-4 h-4" /> {post.likes || 0}
+                        <ThumbsUp className={cn('w-4 h-4', userReactions[String(post.id)] === 'like' && 'fill-green-600')} /> {post.likes || 0}
                       </button>
                       <button
                         onClick={(e) => handleReaction(e, post.id, 'dislike')}
-                        className="flex items-center gap-1.5 text-sm hover:text-red-500 transition"
+                        disabled={userReactions[String(post.id)] === 'like'}
+                        className={cn(
+                          'flex items-center gap-1.5 text-sm transition btn-press',
+                          userReactions[String(post.id)] === 'dislike' 
+                            ? 'text-red-500 font-semibold' 
+                            : userReactions[String(post.id)] === 'like'
+                              ? 'text-gray-300 cursor-not-allowed'
+                              : 'hover:text-red-500'
+                        )}
                       >
-                        <ThumbsDown className="w-4 h-4" /> {post.dislikes || 0}
+                        <ThumbsDown className={cn('w-4 h-4', userReactions[String(post.id)] === 'dislike' && 'fill-red-500')} /> {post.dislikes || 0}
                       </button>
                       <span className="flex items-center gap-1.5 text-sm">
                         <MessageCircle className="w-4 h-4" /> {post.comments}

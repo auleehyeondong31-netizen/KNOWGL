@@ -47,7 +47,22 @@ export default function PlaceDetailPage() {
   const [showContactModal, setShowContactModal] = useState(false)
   const [showApplyModal, setShowApplyModal] = useState(false)
   const [reviewFilter, setReviewFilter] = useState<'all' | 5 | 4 | 3 | 2 | 1>('all')
-  const [reviewSort, setReviewSort] = useState<'latest' | 'helpful'>('latest')
+  const [reviewSort, setReviewSort] = useState<'latest' | 'helpful'>('helpful')
+  // 리뷰 반응 상태: { reviewId: 'like' | 'dislike' | null }
+  const [reviewReactions, setReviewReactions] = useState<Record<string, 'like' | 'dislike' | null>>({})
+
+  // 리뷰 좋아요/싫어요 핸들러 (상호 배타적)
+  const handleReviewReaction = (reviewId: string, type: 'like' | 'dislike') => {
+    const currentReaction = reviewReactions[reviewId]
+    
+    // 이미 같은 반응을 눌렀으면 무시
+    if (currentReaction === type) return
+    
+    // 이미 반대 반응을 눌렀으면 무시
+    if (currentReaction && currentReaction !== type) return
+    
+    setReviewReactions(prev => ({ ...prev, [reviewId]: type }))
+  }
   const [contactForm, setContactForm] = useState({
     name: '',
     phone: '',
@@ -513,13 +528,35 @@ export default function PlaceDetailPage() {
                             {review.content}
                           </p>
                           <div className="flex items-center gap-4">
-                            <button className="flex items-center gap-2 text-sm text-gray-400 hover:text-green-600 transition">
-                              <ThumbsUp className="w-4 h-4" />
-                              {review.helpful || 0}
+                            <button 
+                              onClick={() => handleReviewReaction(review.id, 'like')}
+                              disabled={reviewReactions[review.id] === 'dislike'}
+                              className={cn(
+                                'flex items-center gap-2 text-sm transition btn-press',
+                                reviewReactions[review.id] === 'like' 
+                                  ? 'text-green-600 font-semibold' 
+                                  : reviewReactions[review.id] === 'dislike'
+                                    ? 'text-gray-300 cursor-not-allowed'
+                                    : 'text-gray-400 hover:text-green-600'
+                              )}
+                            >
+                              <ThumbsUp className={cn('w-4 h-4', reviewReactions[review.id] === 'like' && 'fill-green-600')} />
+                              {(review.helpful || 0) + (reviewReactions[review.id] === 'like' ? 1 : 0)}
                             </button>
-                            <button className="flex items-center gap-2 text-sm text-gray-400 hover:text-red-500 transition">
-                              <ThumbsDown className="w-4 h-4" />
-                              0
+                            <button 
+                              onClick={() => handleReviewReaction(review.id, 'dislike')}
+                              disabled={reviewReactions[review.id] === 'like'}
+                              className={cn(
+                                'flex items-center gap-2 text-sm transition btn-press',
+                                reviewReactions[review.id] === 'dislike' 
+                                  ? 'text-red-500 font-semibold' 
+                                  : reviewReactions[review.id] === 'like'
+                                    ? 'text-gray-300 cursor-not-allowed'
+                                    : 'text-gray-400 hover:text-red-500'
+                              )}
+                            >
+                              <ThumbsDown className={cn('w-4 h-4', reviewReactions[review.id] === 'dislike' && 'fill-red-500')} />
+                              {reviewReactions[review.id] === 'dislike' ? 1 : 0}
                             </button>
                           </div>
                         </div>
