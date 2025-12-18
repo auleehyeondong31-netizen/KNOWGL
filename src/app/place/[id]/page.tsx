@@ -512,10 +512,16 @@ export default function PlaceDetailPage() {
                           <p className="text-gray-600 leading-relaxed mb-3">
                             {review.content}
                           </p>
-                          <button className="flex items-center gap-2 text-sm text-gray-400 hover:text-gray-600 transition">
-                            <ThumbsUp className="w-4 h-4" />
-                            도움이 됐어요 ({review.helpful})
-                          </button>
+                          <div className="flex items-center gap-4">
+                            <button className="flex items-center gap-2 text-sm text-gray-400 hover:text-green-600 transition">
+                              <ThumbsUp className="w-4 h-4" />
+                              {review.helpful || 0}
+                            </button>
+                            <button className="flex items-center gap-2 text-sm text-gray-400 hover:text-red-500 transition">
+                              <ThumbsDown className="w-4 h-4" />
+                              0
+                            </button>
+                          </div>
                         </div>
                       ))}
                     </div>

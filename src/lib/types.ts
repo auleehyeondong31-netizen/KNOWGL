@@ -22,6 +22,7 @@ export interface CommunityPost {
   author: string
   authorCountry: string
   likes: number
+  dislikes?: number
   comments: number
   views: number
   createdAt: string

@@ -183,11 +183,32 @@ CREATE TABLE IF NOT EXISTS community_posts (
   image_urls TEXT[] DEFAULT '{}',
   view_count INTEGER DEFAULT 0,
   like_count INTEGER DEFAULT 0,
+  dislike_count INTEGER DEFAULT 0,
   comment_count INTEGER DEFAULT 0,
   is_pinned BOOLEAN DEFAULT false,
   is_deleted BOOLEAN DEFAULT false,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 커뮤니티 게시글 좋아요/싫어요 기록 테이블
+CREATE TABLE IF NOT EXISTS community_post_reactions (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  post_id UUID NOT NULL REFERENCES community_posts(id) ON DELETE CASCADE,
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  reaction_type TEXT NOT NULL CHECK (reaction_type IN ('like', 'dislike')),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  UNIQUE(post_id, user_id)
+);
+
+-- 리뷰 좋아요/싫어요 기록 테이블
+CREATE TABLE IF NOT EXISTS review_reactions (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  review_id UUID NOT NULL REFERENCES reviews(id) ON DELETE CASCADE,
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  reaction_type TEXT NOT NULL CHECK (reaction_type IN ('like', 'dislike')),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  UNIQUE(review_id, user_id)
 );
 
 -- RLS 정책

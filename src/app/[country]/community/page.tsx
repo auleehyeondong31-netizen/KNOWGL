@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
-import { Plus, MessageCircle, Heart, Eye, Clock, TrendingUp } from 'lucide-react'
+import { Plus, MessageCircle, Heart, Eye, Clock, TrendingUp, ThumbsUp, ThumbsDown, ArrowUpDown } from 'lucide-react'
 import { WebLayout } from '@/components/layout/WebLayout'
 import { CountryHeader, SearchInput, CategoryPills, EmptyState, QuickTranslate } from '@/components/common'
 import { useStore } from '@/store/useStore'
@@ -19,6 +19,7 @@ export default function CountryCommunityPage() {
   const { language } = useStore()
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
+  const [sortBy, setSortBy] = useState<'latest' | 'popular'>('popular')
   const [dbPosts, setDbPosts] = useState<CommunityPost[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -69,11 +70,57 @@ export default function CountryCommunityPage() {
   // DB 게시글 + Mock 게시글 합치기
   const allPosts = [...dbPosts, ...mockPosts]
 
-  const filteredPosts = allPosts.filter(post => {
-    if (selectedCategory !== 'all' && post.category !== selectedCategory) return false
-    if (searchQuery && !post.title.toLowerCase().includes(searchQuery.toLowerCase())) return false
-    return true
-  })
+  const filteredPosts = allPosts
+    .filter(post => {
+      if (selectedCategory !== 'all' && post.category !== selectedCategory) return false
+      if (searchQuery && !post.title.toLowerCase().includes(searchQuery.toLowerCase())) return false
+      return true
+    })
+    .sort((a, b) => {
+      if (sortBy === 'popular') {
+        // 인기순: 좋아요 - 싫어요 점수로 정렬
+        const scoreA = (a.likes || 0) - (a.dislikes || 0)
+        const scoreB = (b.likes || 0) - (b.dislikes || 0)
+        return scoreB - scoreA
+      }
+      // 최신순: 날짜 기준 정렬
+      return 0 // DB에서 이미 최신순으로 가져옴
+    })
+
+  // 좋아요/싫어요 클릭 핸들러
+  const handleReaction = async (e: React.MouseEvent, postId: string | number, type: 'like' | 'dislike') => {
+    e.preventDefault()
+    e.stopPropagation()
+    
+    if (typeof postId !== 'string') return // Mock 데이터는 처리 안함
+    
+    try {
+      const column = type === 'like' ? 'like_count' : 'dislike_count'
+      const post = dbPosts.find(p => p.id === postId)
+      if (!post) return
+      
+      const currentCount = type === 'like' ? (post.likes || 0) : (post.dislikes || 0)
+      
+      await supabase
+        .from('community_posts')
+        .update({ [column]: currentCount + 1 })
+        .eq('id', postId)
+      
+      // 로컬 상태 업데이트
+      setDbPosts(prev => prev.map(p => {
+        if (p.id === postId) {
+          return {
+            ...p,
+            likes: type === 'like' ? (p.likes || 0) + 1 : p.likes,
+            dislikes: type === 'dislike' ? (p.dislikes || 0) + 1 : p.dislikes,
+          }
+        }
+        return p
+      }))
+    } catch (err) {
+      console.error('Reaction error:', err)
+    }
+  }
 
   const getCategoryName = (category: string) => {
     const cat = communityCategories.find(c => c.id === category)
@@ -136,6 +183,33 @@ export default function CountryCommunityPage() {
                 {selectedCategory === 'all' ? (isKorean ? '전체' : 'All') : getCategoryName(selectedCategory)}
                 <span className="text-gray-400 font-normal ml-2">{filteredPosts.length}{isKorean ? '개' : ' posts'}</span>
               </h2>
+              {/* 정렬 옵션 */}
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setSortBy('popular')}
+                  className={cn(
+                    'flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-medium transition',
+                    sortBy === 'popular' 
+                      ? 'bg-rose-100 text-rose-600' 
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  )}
+                >
+                  <TrendingUp className="w-4 h-4" />
+                  {isKorean ? '인기순' : 'Popular'}
+                </button>
+                <button
+                  onClick={() => setSortBy('latest')}
+                  className={cn(
+                    'flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-medium transition',
+                    sortBy === 'latest' 
+                      ? 'bg-rose-100 text-rose-600' 
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  )}
+                >
+                  <Clock className="w-4 h-4" />
+                  {isKorean ? '최신순' : 'Latest'}
+                </button>
+              </div>
             </div>
 
             <div className="space-y-4">
@@ -186,10 +260,19 @@ export default function CountryCommunityPage() {
                         <span className="text-gray-400 text-sm ml-2">{post.authorCountry}</span>
                       </div>
                     </div>
-                    <div className="flex items-center gap-4 text-gray-400">
-                      <span className="flex items-center gap-1.5 text-sm">
-                        <Heart className="w-4 h-4" /> {post.likes}
-                      </span>
+                    <div className="flex items-center gap-3 text-gray-400">
+                      <button
+                        onClick={(e) => handleReaction(e, post.id, 'like')}
+                        className="flex items-center gap-1.5 text-sm hover:text-green-600 transition"
+                      >
+                        <ThumbsUp className="w-4 h-4" /> {post.likes || 0}
+                      </button>
+                      <button
+                        onClick={(e) => handleReaction(e, post.id, 'dislike')}
+                        className="flex items-center gap-1.5 text-sm hover:text-red-500 transition"
+                      >
+                        <ThumbsDown className="w-4 h-4" /> {post.dislikes || 0}
+                      </button>
                       <span className="flex items-center gap-1.5 text-sm">
                         <MessageCircle className="w-4 h-4" /> {post.comments}
                       </span>
