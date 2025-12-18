@@ -9,7 +9,7 @@ import {
 import { cn } from '@/lib/utils'
 import { useStore } from '@/store/useStore'
 import { useAuth } from '@/hooks/useAuth'
-import { Language } from '@/lib/i18n'
+import { Language, t } from '@/lib/i18n'
 import { PageTranslateButton } from '@/components/common/TranslateButton'
 
 const languages = [
@@ -39,13 +39,16 @@ export function WebLayout({ children, showNav = true }: WebLayoutProps) {
   const validCountries = ['kr', 'jp', 'au', 'us', 'ca', 'sg', 'tw']
   const currentCountry = validCountries.includes(countryFromPath) ? countryFromPath : (onboardingData.destination || 'kr')
   
-  // 동적 네비게이션 아이템
+  // 현재 언어
+  const lang = language as Language
+  
+  // 동적 네비게이션 아이템 (언어에 따라 실시간 변경)
   const navItems = [
-    { href: `/${currentCountry}`, icon: Home, label: '홈' },
-    { href: `/${currentCountry}/tips`, icon: Lightbulb, label: '생활팁' },
-    { href: `/${currentCountry}/market`, icon: ShoppingBag, label: '마켓' },
-    { href: `/${currentCountry}/community`, icon: Users, label: '커뮤니티' },
-    { href: '/mypage', icon: User, label: '마이페이지' },
+    { href: `/${currentCountry}`, icon: Home, label: t('tab_home', lang) },
+    { href: `/${currentCountry}/tips`, icon: Lightbulb, label: t('tips_title', lang) },
+    { href: `/${currentCountry}/market`, icon: ShoppingBag, label: t('tab_market', lang) },
+    { href: `/${currentCountry}/community`, icon: Users, label: t('tab_community', lang) },
+    { href: '/mypage', icon: User, label: t('tab_mypage', lang) },
   ]
 
   return (
@@ -169,7 +172,7 @@ export function WebLayout({ children, showNav = true }: WebLayoutProps) {
                       className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition"
                     >
                       <User className="w-4 h-4" />
-                      <span>마이페이지</span>
+                      <span>{t('tab_mypage', lang)}</span>
                     </Link>
                     <button
                       onClick={() => logout()}
@@ -185,7 +188,7 @@ export function WebLayout({ children, showNav = true }: WebLayoutProps) {
                     className="flex items-center gap-1 px-2 py-1 sm:px-3 sm:py-1.5 bg-indigo-600 text-white text-xs sm:text-sm font-medium rounded-lg hover:bg-indigo-700 transition"
                   >
                     <LogIn className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                    <span className="hidden xs:inline">로그인</span>
+                    <span className="hidden xs:inline">{lang === 'ko' ? '로그인' : lang === 'en' ? 'Login' : lang === 'ja' ? 'ログイン' : lang === 'zh' ? '登录' : 'Đăng nhập'}</span>
                   </Link>
                 )}
               </div>
