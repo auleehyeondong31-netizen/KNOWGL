@@ -245,7 +245,7 @@ export default function CountryHomePage() {
               <div 
                 key={listing.id}
                 className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 group cursor-pointer hover:shadow-lg transition-shadow"
-                onClick={() => router.push(`/${countryCode}/place/${listing.id}`)}
+                onClick={() => router.push(`/place/${listing.id}`)}
               >
                 <div className="relative aspect-[4/3]">
                   <img 
