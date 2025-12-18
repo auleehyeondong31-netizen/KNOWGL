@@ -1,20 +1,16 @@
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { Database } from './supabase'
 
+// Supabase 설정 (환경 변수 우선, 없으면 하드코딩 값 사용)
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://klqvgmdzqvluplmjjbey.supabase.co'
+const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtscXZnbWR6cXZsdXBsbWpqYmV5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU5MTUzMjEsImV4cCI6MjA4MTQ5MTMyMX0.ZKMHNeLOtWOlKMxOzh4fbme2Yc-DAq6yuklDPt4MDrw'
+
 // 클라이언트 컴포넌트용 Supabase 클라이언트
 export const createClient = () => {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  
-  // 빌드 시점에 환경 변수가 없으면 더미 값으로 생성
-  if (!supabaseUrl || !supabaseKey) {
-    return createClientComponentClient<Database>({
-      supabaseUrl: 'https://placeholder.supabase.co',
-      supabaseKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsYWNlaG9sZGVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NDUxOTI4MjQsImV4cCI6MTk2MDc2ODgyNH0.placeholder',
-    })
-  }
-  
-  return createClientComponentClient<Database>()
+  return createClientComponentClient<Database>({
+    supabaseUrl: SUPABASE_URL,
+    supabaseKey: SUPABASE_ANON_KEY,
+  })
 }
 
 // 이메일 로그인
