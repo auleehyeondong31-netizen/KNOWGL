@@ -237,6 +237,42 @@ CREATE INDEX IF NOT EXISTS idx_community_posts_user_id ON community_posts(user_i
 CREATE INDEX IF NOT EXISTS idx_community_posts_created_at ON community_posts(created_at DESC);
 
 -- =====================================================
+-- market_items 테이블 (지식 마켓)
+-- =====================================================
+
+CREATE TABLE IF NOT EXISTS market_items (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  country TEXT NOT NULL DEFAULT 'kr',
+  category TEXT NOT NULL DEFAULT 'general',
+  title TEXT NOT NULL,
+  description TEXT NOT NULL,
+  price INTEGER NOT NULL DEFAULT 0,
+  currency TEXT DEFAULT 'KRW',
+  image_url TEXT,
+  file_url TEXT,
+  tags TEXT[] DEFAULT '{}',
+  view_count INTEGER DEFAULT 0,
+  like_count INTEGER DEFAULT 0,
+  purchase_count INTEGER DEFAULT 0,
+  rating DECIMAL(2,1) DEFAULT 0,
+  review_count INTEGER DEFAULT 0,
+  is_published BOOLEAN DEFAULT true,
+  is_deleted BOOLEAN DEFAULT false,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- RLS 정책
+ALTER TABLE market_items DISABLE ROW LEVEL SECURITY;
+
+-- 인덱스
+CREATE INDEX IF NOT EXISTS idx_market_items_country ON market_items(country);
+CREATE INDEX IF NOT EXISTS idx_market_items_category ON market_items(category);
+CREATE INDEX IF NOT EXISTS idx_market_items_user_id ON market_items(user_id);
+CREATE INDEX IF NOT EXISTS idx_market_items_created_at ON market_items(created_at DESC);
+
+-- =====================================================
 -- community_comments 테이블 (댓글)
 -- =====================================================
 

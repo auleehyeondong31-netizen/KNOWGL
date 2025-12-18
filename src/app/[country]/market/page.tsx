@@ -1,8 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
-import { Star, ShoppingBag, Eye, Heart, Plus } from 'lucide-react'
+import Link from 'next/link'
+import { Star, ShoppingBag, Eye, Heart, Plus, Loader2 } from 'lucide-react'
+import { supabase } from '@/lib/supabase'
+import { CardSkeleton } from '@/components/ui/Skeleton'
 import { WebLayout } from '@/components/layout/WebLayout'
 import { CountryHeader, SearchInput, CategoryPills, EmptyState } from '@/components/common'
 import { useStore } from '@/store/useStore'
@@ -10,18 +13,81 @@ import { marketCategories } from '@/lib/constants'
 import { cn } from '@/lib/utils'
 import { marketItemsByCountry, getCurrencySymbol } from '@/lib/mockData'
 
+interface MarketItemDB {
+  id: string
+  title: string
+  category: string
+  description: string
+  price: number
+  currency: string
+  image_url: string | null
+  view_count: number
+  like_count: number
+  rating: number
+  review_count: number
+}
+
 export default function CountryMarketPage() {
   const params = useParams()
   const countryCode = params.country as string
   const { language } = useStore()
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
+  const [dbItems, setDbItems] = useState<MarketItemDB[]>([])
+  const [loading, setLoading] = useState(true)
 
   const isKorean = language === 'ko'
   const mockItems = marketItemsByCountry[countryCode] || marketItemsByCountry['kr']
   const currency = getCurrencySymbol(countryCode)
 
-  const filteredItems = mockItems.filter(item => {
+  // Supabase에서 마켓 아이템 불러오기
+  useEffect(() => {
+    async function fetchItems() {
+      try {
+        const { data, error } = await supabase
+          .from('market_items')
+          .select('*')
+          .eq('country', countryCode)
+          .eq('is_deleted', false)
+          .eq('is_published', true)
+          .order('created_at', { ascending: false })
+          .limit(50)
+
+        if (error) {
+          console.error('Error fetching market items:', error)
+        } else if (data) {
+          setDbItems(data)
+        }
+      } catch (err) {
+        console.error('Error:', err)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchItems()
+  }, [countryCode])
+
+  // DB 아이템을 Mock 형식으로 변환
+  const dbItemsFormatted = dbItems.map(item => ({
+    id: item.id,
+    title: item.title,
+    category: item.category,
+    description: item.description,
+    price: item.price,
+    rating: Number(item.rating) || 0,
+    reviews: item.review_count || 0,
+    views: item.view_count || 0,
+    likes: item.like_count || 0,
+    thumbnail: item.image_url || '📄',
+    seller: 'User',
+    isFromDB: true,
+  }))
+
+  // DB + Mock 아이템 합치기
+  const allItems = [...dbItemsFormatted, ...mockItems]
+
+  const filteredItems = allItems.filter(item => {
     if (selectedCategory !== 'all' && item.category !== selectedCategory) return false
     if (searchQuery && !item.title.toLowerCase().includes(searchQuery.toLowerCase())) return false
     return true
@@ -47,10 +113,13 @@ export default function CountryMarketPage() {
                 {isKorean ? '유용한 정보와 가이드를 찾아보세요' : 'Find useful information and guides'}
               </p>
             </div>
-            <button className="flex items-center gap-2 px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition font-semibold">
+            <Link 
+              href={`/${countryCode}/market/sell`}
+              className="flex items-center gap-2 px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition font-semibold btn-press"
+            >
               <Plus className="w-4 h-4" />
               {isKorean ? '지식 판매하기' : 'Sell Knowledge'}
-            </button>
+            </Link>
           </div>
 
           {/* Filters */}
@@ -80,11 +149,18 @@ export default function CountryMarketPage() {
         </div>
 
         {/* Items Grid */}
+        {loading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+              <CardSkeleton key={i} />
+            ))}
+          </div>
+        ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredItems.map((item) => (
             <div 
               key={item.id}
-              className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-lg transition cursor-pointer group"
+              className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden card-hover cursor-pointer group"
             >
               <div className="h-36 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center text-5xl group-hover:scale-105 transition-transform">
                 {item.thumbnail}
@@ -121,8 +197,9 @@ export default function CountryMarketPage() {
             </div>
           ))}
         </div>
+        )}
 
-        {filteredItems.length === 0 && (
+        {filteredItems.length === 0 && !loading && (
           <EmptyState
             icon={ShoppingBag}
             title={isKorean ? '검색 결과가 없습니다' : 'No results found'}
