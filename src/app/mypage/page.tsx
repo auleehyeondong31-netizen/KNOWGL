@@ -39,7 +39,7 @@ const menuItems = [
     items: [
       { icon: Bot, label: 'AI 비자 상담', color: 'text-indigo-500', href: '/ai-chat' },
       { icon: HelpCircle, label: '고객센터', color: 'text-gray-600', href: '/mypage/support' },
-      { icon: AlertTriangle, label: 'SOS 카드', color: 'text-red-500', href: '/mypage/sos' },
+      { icon: AlertTriangle, label: 'SOS 카드', color: 'text-red-500', href: '/sos' },
     ]
   }
 ]
