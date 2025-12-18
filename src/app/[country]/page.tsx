@@ -11,8 +11,9 @@ import {
   Search, SlidersHorizontal, Heart, Star, MapPin, ChevronDown,
   Briefcase, Home as HomeIcon, Store, Coffee, UtensilsCrossed,
   Hotel, Warehouse, Users, GraduationCap, Building2, Utensils,
-  ShoppingBag, Fuel, Cross, Landmark, Filter, Loader2, Globe
+  ShoppingBag, Fuel, Cross, Landmark, Filter, Loader2, Globe, Sparkles
 } from 'lucide-react'
+import { CardSkeleton } from '@/components/ui/Skeleton'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
 
@@ -236,15 +237,17 @@ export default function CountryHomePage() {
 
         {/* Listings Grid */}
         {loading ? (
-          <div className="flex items-center justify-center py-20">
-            <Loader2 className="w-8 h-8 animate-spin text-gray-400" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+              <CardSkeleton key={i} />
+            ))}
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredListings.map((listing) => (
               <div 
                 key={listing.id}
-                className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 group cursor-pointer hover:shadow-lg transition-shadow"
+                className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 group cursor-pointer card-hover"
                 onClick={() => router.push(`/place/${listing.id}`)}
               >
                 <div className="relative aspect-[4/3]">

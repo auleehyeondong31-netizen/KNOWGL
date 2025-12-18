@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
-import { Plus, MessageCircle, Heart, Eye, Clock, TrendingUp, ThumbsUp, ThumbsDown, ArrowUpDown } from 'lucide-react'
+import { Plus, MessageCircle, Heart, Eye, Clock, TrendingUp, ThumbsUp, ThumbsDown, ArrowUpDown, Loader2 } from 'lucide-react'
+import { PostSkeleton } from '@/components/ui/Skeleton'
 import { WebLayout } from '@/components/layout/WebLayout'
 import { CountryHeader, SearchInput, CategoryPills, EmptyState, QuickTranslate } from '@/components/common'
 import { useStore } from '@/store/useStore'
@@ -213,11 +214,17 @@ export default function CountryCommunityPage() {
             </div>
 
             <div className="space-y-4">
-              {filteredPosts.map((post) => (
+              {loading ? (
+                <>
+                  {[1, 2, 3, 4].map((i) => (
+                    <PostSkeleton key={i} />
+                  ))}
+                </>
+              ) : filteredPosts.map((post) => (
                 <Link
                   href={post.isFromDB ? `/${countryCode}/community/${post.id}` : '#'}
                   key={post.id}
-                  className="block bg-white rounded-xl border border-gray-100 shadow-sm p-5 hover:shadow-md transition"
+                  className="block bg-white rounded-xl border border-gray-100 shadow-sm p-5 card-hover"
                 >
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center gap-2">
